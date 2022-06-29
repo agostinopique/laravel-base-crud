@@ -6,9 +6,9 @@
     <div class="container">
         <div class="row row-cols-4">
             @foreach ($comics as $comic)
-            <div class="col my-4" href>
-                <div class="image">
-                    <a href="{{ route('comic.show', $comic) }}">
+            <div class="col my-4">
+                <div class="text-center">
+                    <a href="{{ route('comic.show', $comic->slug) }}">
                         <img src="{{$comic->image}}" alt="{{$comic->title}}">
                     </a>
                     <h4>{{$comic->title}}</h4>
