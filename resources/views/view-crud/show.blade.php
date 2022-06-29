@@ -7,6 +7,7 @@
         <h2 class="mt-4">{{$comic->title}}</h2>
         <h5 class="mt-1">{{$comic->type}}</h5>
     </div>
-    <button href="{{ route('comic.index') }}" type="button" class="btn btn-primary"><< Back</button>
+    <a class="btn btn-primary" href="{{ route('comic.index') }}" role="button"><< Back</a>
+
 
 @endsection
