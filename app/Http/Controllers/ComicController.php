@@ -51,7 +51,7 @@ class ComicController extends Controller
         $new_comic->slug = Str::slug($comic['title'], '-');
         $new_comic->save();
 
-        return redirect()->route('comic.show', $new_comic->slug);
+        return redirect()->route('comic.show', $new_comic->id);
     }
 
     /**
@@ -60,9 +60,10 @@ class ComicController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($slug)
+    public function show($id)
     {
-        $comic = Comic::where('slug', $slug)->first();
+        $comic = Comic::find($id);
+        // $comic = Comic::where('slug', $slug)->first();
         return view('view-crud.show', compact('comic'));
     }
 
@@ -74,7 +75,8 @@ class ComicController extends Controller
      */
     public function edit($id)
     {
-        //
+        $comic = Comic::find($id);
+        return view('view-crud.edit', compact('comic'));
     }
 
     /**
@@ -84,9 +86,15 @@ class ComicController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Comic $comic)
     {
-        //
+        $new_data = $request->all();
+        // dd($new_data);
+        $comic->slug = Str::slug($comic['title'], '-');
+
+        $comic->update($new_data);
+
+        return redirect()->route('comic.show', $comic);
     }
 
     /**
@@ -95,8 +103,9 @@ class ComicController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Comic $comic)
     {
-        //
+        $comic->delete();
+        return redirect()->route('comic.index');
     }
 }
