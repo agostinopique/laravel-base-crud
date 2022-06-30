@@ -48,7 +48,7 @@ class ComicController extends Controller
         // $new_comic->type = $comic['type'];
         // $new_comic->image = $comic['image'];
         $new_comic->fill($comic);
-        $new_comic->slug = Str::slug($comic['title'], '-');
+        $new_comic->slug = $this->checkSlug($comic['title']);
         $new_comic->save();
 
         return redirect()->route('comic.show', $new_comic->id);
@@ -62,9 +62,13 @@ class ComicController extends Controller
      */
     public function show($id)
     {
-        $comic = Comic::find($id);
         // $comic = Comic::where('slug', $slug)->first();
-        return view('view-crud.show', compact('comic'));
+
+        $comic = Comic::find($id);
+        if($comic){
+            return view('view-crud.show', compact('comic'));
+        }
+        abort(404);
     }
 
     /**
@@ -90,7 +94,7 @@ class ComicController extends Controller
     {
         $new_data = $request->all();
         // dd($new_data);
-        $comic->slug = Str::slug($comic['title'], '-');
+        $comic->slug = $this->checkSlug($comic['title']);
 
         $comic->update($new_data);
 
@@ -106,6 +110,18 @@ class ComicController extends Controller
     public function destroy(Comic $comic)
     {
         $comic->delete();
-        return redirect()->route('comic.index');
+        return redirect()->route('comic.index')->with('deleted', 'You have removed correctly the comic from your collection!');
+    }
+
+    private function checkSlug($string){
+        $new_slug = Str::slug($string, '-');
+        $findSlug = Comic::where('slug', $new_slug)->first();
+        $i = 0;
+        while($findSlug){
+            $new_slug = Str::slug($string, '-') . $i;
+            $i++;
+            $findSlug = Comic::where('slug', $new_slug)->first();
+        }
+        return $new_slug;
     }
 }
