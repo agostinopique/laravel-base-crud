@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Comic;
+use App\Http\Requests\ComicRequest;
 
 class ComicController extends Controller
 {
@@ -37,29 +38,9 @@ class ComicController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ComicRequest $request)
     {
         $comic = $request->all();
-
-        $request->validate(
-            [
-                'title' => 'required|max:50|min:3',
-                'image' => 'required',
-                'type' => 'required|max:50|min:3'
-            ],
-            [
-                'title.required' => 'Inserisci il titolo',
-                'title.max'=> 'Il titolo deve avere al massimo :max caratteri',
-                'title.min'=> 'Il titolo deve avere almeno :min caratteri',
-                'image.required' => 'Inserisci l\'image',
-                'image.max'=> 'L\'image deve avere al massimo :max caratteri',
-                'image.min'=> 'L\'image deve avere almeno :min caratteri',
-                'type.required' => 'Inserisci il tipo',
-                'type.max'=> 'Il tipo deve avere al massimo :max caratteri',
-                'type.min'=> 'Il tipo deve avere almeno :min caratteri',
-
-            ]
-    );
 
         $new_comic = new Comic();
         // dd($request->all());
@@ -111,29 +92,9 @@ class ComicController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Comic $comic)
+    public function update(ComicRequest $request, Comic $comic)
     {
         $new_data = $request->all();
-
-        $request->validate(
-            [
-                'title' => 'required|max:50|min:3',
-                'image' => 'required',
-                'type' => 'required|max:50|min:3'
-            ],
-            [
-                'title.required' => 'Inserisci il titolo',
-                'title.max'=> 'Il titolo deve avere al massimo :max caratteri',
-                'title.min'=> 'Il titolo deve avere almeno :min caratteri',
-                'image.required' => 'Inserisci l\'image',
-                'image.max'=> 'L\'image deve avere al massimo :max caratteri',
-                'image.min'=> 'L\'image deve avere almeno :min caratteri',
-                'type.required' => 'Inserisci il tipo',
-                'type.max'=> 'Il tipo deve avere al massimo :max caratteri',
-                'type.min'=> 'Il tipo deve avere almeno :min caratteri',
-
-            ]
-    );
 
         $comic->slug = $this->checkSlug($comic['title']);
 
