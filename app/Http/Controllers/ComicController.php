@@ -40,6 +40,27 @@ class ComicController extends Controller
     public function store(Request $request)
     {
         $comic = $request->all();
+
+        $request->validate(
+            [
+                'title' => 'required|max:50|min:3',
+                'image' => 'required',
+                'type' => 'required|max:50|min:3'
+            ],
+            [
+                'title.required' => 'Inserisci il titolo',
+                'title.max'=> 'Il titolo deve avere al massimo :max caratteri',
+                'title.min'=> 'Il titolo deve avere almeno :min caratteri',
+                'image.required' => 'Inserisci l\'image',
+                'image.max'=> 'L\'image deve avere al massimo :max caratteri',
+                'image.min'=> 'L\'image deve avere almeno :min caratteri',
+                'type.required' => 'Inserisci il tipo',
+                'type.max'=> 'Il tipo deve avere al massimo :max caratteri',
+                'type.min'=> 'Il tipo deve avere almeno :min caratteri',
+
+            ]
+    );
+
         $new_comic = new Comic();
         // dd($request->all());
         // $new_comic = new Comic();
